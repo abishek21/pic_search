@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Search Results</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+
+<h2>Search for an Image</h2>
+<form action="/search" method="post">
+    <!-- Field for entering the catalog name -->
+    <label for="catalogName">Catalog Name:</label>
+    <input type="text" id="catalogName" name="catalogName" value="{{ catalog_name }}">
+
+    <!-- Field for entering the image file name -->
+    <label for="query">Enter your search query:</label>
+    <input type="text" id="query" name="query">
+
+    <input type="submit" value="Search">
+</form>
+
+<!-- Image results will be displayed here -->
+<div class="image-results">
+    {% for image_url in image_urls %}
+        <img src="{{ image_url }}" alt="Image result" width="200">
+    {% endfor %}
+</div>
+
+
+<!-- Back Button to Index Page -->
+<a href="/" class="back-button">Back to Home</a>
+
+
+</body>
+</html>

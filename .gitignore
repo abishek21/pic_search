@@ -1,0 +1,5 @@
+data/
+static/
+!static/css/
+*.json
+*.ann
