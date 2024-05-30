@@ -3,24 +3,45 @@
 <head>
     <title>Welcome to Pic Search</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <script>
+      function updateUploadOption() {
+        var uploadType = document.querySelector('input[name="uploadType"]:checked').value;
+        document.getElementById('folderUploadGroup').style.display = uploadType === 'folder' ? 'block' : 'none';
+        document.getElementById('csvUploadGroup').style.display = uploadType === 'csv' ? 'block' : 'none';
+      }
+    </script>
 </head>
-<body>
+<body onload="updateUploadOption()">
 
 <h2>Welcome to Pic Search</h2>
-<form action="/upload_folder" method="post" enctype="multipart/form-data">
+<form action="/upload_assets" method="post" enctype="multipart/form-data">
   <!-- Image Catalog Name Field -->
   <div class="form-group">
     <label for="catalogName">Image Catalog Name:</label>
     <input type="text" id="catalogName" name="catalogName" required>
   </div>
 
-  <!-- Folder Upload Field -->
-  <div class="form-group">
-    <label for="folder">Select folder to upload:</label>
-    <input type="file" name="files[]" id="folder" directory webkitdirectory multiple required>
+  <!-- Upload Type Selection -->
+  <div>
+    <input type="radio" id="folderOption" name="uploadType" value="folder" checked onchange="updateUploadOption()">
+    <label for="folderOption">Upload Folder</label>
+    <input type="radio" id="csvOption" name="uploadType" value="csv" onchange="updateUploadOption()">
+    <label for="csvOption">Upload CSV</label>
   </div>
 
-  <input type="submit" value="Upload Folder" name="submit">
+  <!-- Folder Upload Field -->
+  <div id="folderUploadGroup" class="form-group">
+    <label for="folder">Select folder to upload:</label>
+    <input type="file" name="files[]" id="folder" directory webkitdirectory multiple>
+  </div>
+
+  <!-- CSV Upload Field -->
+  <div id="csvUploadGroup" class="form-group" style="display: none;">
+    <label for="csvFile">Select CSV file to upload:</label>
+    <input type="file" name="csvFile" id="csvFile">
+  </div>
+
+  <input type="submit" value="Upload" name="submit">
 </form>
 
 <!-- Button to go to the search page -->

@@ -23,9 +23,12 @@ def upload_image_embeddings(qdrant_client_params,image_dir,collection_name):
     image_files = list(os.listdir(image_dir))
     clip_embedding={}
     for image_path in tqdm(image_files):
-        image_clip = clip.preprocess_image(os.path.join(image_dir, image_path))
-        image_features = clip.image_embeddings(image_clip)
-        clip_embedding[image_path] = image_features
+        try:
+            image_clip = clip.preprocess_image(os.path.join(image_dir, image_path))
+            image_features = clip.image_embeddings(image_clip)
+            clip_embedding[image_path] = image_features
+        except Exception as e:
+            print(e)
 
     points=make_points_struct(clip_embedding)
     add_embeddings_to_collection(client,collection_name,points)

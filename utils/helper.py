@@ -7,6 +7,7 @@ import pandas as pd
 import requests
 from concurrent.futures import ThreadPoolExecutor
 import time
+from flask_app import cache
 
 def generate_random_id(length=8):
     # Generates a random string of letters and digits
@@ -26,9 +27,11 @@ def move_to_static_folder(dest,source_dir,files,folder_name_with_query):
 
 
 def valid_csv(csv_fp):
-    df=pd.read_csv(csv_fp,header=None)
-    if len(df)>0:
-        return True,df[1:][0].tolist()
+    df=pd.read_csv(csv_fp)
+
+    if len(df)>0 and 'image url' in df.columns:
+        image_urls = df['image url'].tolist()
+        return True,image_urls
     else:
         return False,[]
 
@@ -46,7 +49,7 @@ def download_images(data_dir,url):
         with open(fp_file_dest, 'wb') as handler:
             handler.write(data)
     else:
-        print(r.status_code)
+        print(f'[INFO] {url} failed {r.status_code}')
 
 
 def download_images_concurrently(data_dir, urls, max_workers=5):
@@ -98,3 +101,52 @@ def download_images_from_folder_concurrently(files,collection_name,DATA_DIR,max_
                 future.result()
             except Exception as e:
                 print(f"Error occurred: {e}")
+
+
+
+
+
+
+def update_collection_status(collection_nname,status):
+    from app import cache
+    cache.set(f'{collection_nname}_status', status, timeout=0)
+
+def get_collection_status(collection_nname):
+    from app import cache
+    return cache.get(f'{collection_nname}_status')
+
+
+
+
+def get_csv_fp(collection_dir):
+    # List all files in the directory
+    files = os.listdir(collection_dir)
+
+    # Find the CSV file
+    csv_file = None
+    for file in files:
+        if file.endswith('.csv'):
+            csv_file = file
+            break
+
+    if csv_file:
+        # Construct the full path to the CSV file
+        csv_file_path = os.path.join(collection_dir, csv_file)
+
+        return csv_file_path
+
+
+
+def get_image_url(search_result,csv_file_path):
+    import pandas as pd
+    # Load the CSV file into a DataFrame
+    df = pd.read_csv(csv_file_path)
+    search_result_url={'candidates':[],'scores':[]}
+    for candidate,score in zip(search_result['candidates'],search_result['scores']):
+        filename=candidate.split('?')[0]
+        imageurl = df[df['image_name'] == filename]['image url'].values[0]
+        search_result_url['candidates'].append(imageurl)
+        search_result_url['scores'].append(score)
+
+    return search_result_url
+
