@@ -6,8 +6,7 @@ import string
 import pandas as pd
 import requests
 from concurrent.futures import ThreadPoolExecutor
-import time
-from flask_app import cache
+
 
 def generate_random_id(length=8):
     # Generates a random string of letters and digits
@@ -107,9 +106,7 @@ def download_images_from_folder_concurrently(files,collection_name,DATA_DIR,max_
 
 
 
-def update_collection_status(collection_nname,status):
-    from app import cache
-    cache.set(f'{collection_nname}_status', status, timeout=0)
+
 
 def get_collection_status(collection_nname):
     from app import cache

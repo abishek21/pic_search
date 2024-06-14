@@ -2,14 +2,15 @@ import json
 from qdrant_client.http.models import Distance, VectorParams
 from qdrant_client.http.models import PointStruct
 from utils.helper import generate_random_id
-
+from qdrant_client import QdrantClient
 
 
 def collection_exists(client,collection_name):
     collections = client.http.collections_api.get_collections().result.collections
     return any(collection.name == collection_name for collection in collections)
 
-def create_collection(client,collection_name,embedding_size):
+def create_collection(qdrant_client_params,collection_name,embedding_size):
+    client = QdrantClient(**qdrant_client_params)
     if collection_exists(client, collection_name):
         print(f'[INFO] {collection_name} already exists')
     else:
