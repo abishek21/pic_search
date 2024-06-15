@@ -17,7 +17,6 @@ services:
     build:
       context: .
       dockerfile: Dockerfile.rq_worker
-    image: python:3.9-slim
     volumes:
       - .:/pic_search
     working_dir: /pic_search
