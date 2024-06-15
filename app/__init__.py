@@ -8,7 +8,9 @@ app.config.from_object('config.Config')
 
 cache = Cache(app)
 
-r = redis.Redis()
+r = redis.Redis(host=app.config['CACHE_REDIS_HOST'],
+                port=app.config['CACHE_REDIS_PORT'],
+                db=app.config['CACHE_REDIS_DB'])
 q = Queue(connection=r)
 
 def create_app():
