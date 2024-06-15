@@ -1,0 +1,37 @@
+version: '3.8'
+
+services:
+  qdrant:
+    image: qdrant/qdrant
+    ports:
+      - "6333:6333"
+    volumes:
+      - qdrant_data:/qdrant/storage
+
+  redis:
+    image: redis:6.2
+    ports:
+      - "6379:6379"
+
+  rq_worker:
+    image: python:3.9-slim
+    volumes:
+      - .:/app
+    working_dir: /app
+    command: ["rq", "worker"]
+    depends_on:
+      - redis
+
+  flask:
+    build: .
+    ports:
+      - "5000:5000"
+    environment:
+      - FLASK_ENV=development
+    depends_on:
+      - qdrant
+      - redis
+      - rq_worker
+
+volumes:
+  qdrant_data:
