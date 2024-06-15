@@ -2,8 +2,11 @@
 FROM python:3.9-slim
 
 
-ARG BASE=master
+ARG BASE=main
 ENV ROOT_PATH /pic_search
+
+# Install Git
+RUN apt-get update && apt-get install -y git && rm -rf /var/lib/apt/lists/*
 RUN mkdir -p /vol/cache
 RUN chmod -R 777 /vol/cache
 
