@@ -26,4 +26,4 @@ ENV PYTHONUNBUFFERED 1
 EXPOSE 5000
 
 # Run the Flask app
-CMD ["flask", "run", "--host=0.0.0.0"]
+CMD ["python", "app/run.py"]
