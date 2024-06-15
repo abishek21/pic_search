@@ -17,8 +17,11 @@ RUN git clone https://github.com/abishek21/pic_search.git --branch ${BASE} ${ROO
 # Set the working directory in the container
 WORKDIR /pic_search
 
+# Install necessary packages including specific versions of torch, torchvision, and torchaudio from the CPU-only index
+RUN pip install --no-cache-dir torch==2.0.1 torchvision==0.15.2 torchaudio==2.0.2 --index-url https://download.pytorch.org/whl/cpu
 # Install any needed packages specified in requirements.txt
 RUN pip install --no-cache-dir -r requirements.txt
+
 ENV PYTHONPATH="/pic_search"
 ENV PYTHONUNBUFFERED 1
 
