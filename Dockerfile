@@ -32,4 +32,4 @@ RUN chmod +x /start.sh
 
 # Run the Flask app
 #CMD ["python", "run.py"]
-CMD ["/start.sh"]
+CMD ["start.sh"]
