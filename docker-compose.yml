@@ -20,7 +20,7 @@ services:
     volumes:
       - .:/pic_search
     working_dir: /pic_search
-    command: ["rq", "worker"]
+    command: ["rq", "worker","--url","redis://redis:6379/0"]
     depends_on:
       - redis
 

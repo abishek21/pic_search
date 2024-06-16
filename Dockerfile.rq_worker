@@ -1,5 +1,7 @@
 # Use an official Python runtime as a parent image
 FROM python:3.9.0-slim
 
+WORKDIR /pic_search
+
 # Install RQ package separately if it's not included in requirements.txt
 RUN pip install rq
