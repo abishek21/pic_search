@@ -13,14 +13,14 @@ services:
     ports:
       - "6379:6379"
 
-  rq_worker:
-    image: jenvzla/rq-worker:latest
-    volumes:
-      - .:/pic_search
-    working_dir: /pic_search
-    command: ["rq", "worker","--url","redis://redis:6379/0"]
-    depends_on:
-      - redis
+#  rq_worker:
+#    image: jenvzla/rq-worker:latest
+#    volumes:
+#      - .:/pic_search
+#    working_dir: /pic_search
+#    command: ["rq", "worker","--url","redis://redis:6379/0"]
+#    depends_on:
+#      - redis
 
   flask:
     build: .
@@ -31,7 +31,7 @@ services:
     depends_on:
       - qdrant
       - redis
-      - rq_worker
+#      - rq_worker
 
 volumes:
   qdrant_data:
