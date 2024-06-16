@@ -28,8 +28,8 @@ ENV PYTHONUNBUFFERED 1
 # Make port 5000 available to the world outside this container
 EXPOSE 5000
 
-RUN chmod +x start.sh
+RUN chmod +x ./start.sh
 
 # Run the Flask app
 #CMD ["python", "run.py"]
-CMD ["start.sh"]
+CMD ["sh","start.sh"]
