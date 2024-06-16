@@ -14,9 +14,7 @@ services:
       - "6379:6379"
 
   rq_worker:
-    build:
-      context: .
-      dockerfile: Dockerfile.rq_worker
+    image: jenvzla/rq-worker:latest
     volumes:
       - .:/pic_search
     working_dir: /pic_search
